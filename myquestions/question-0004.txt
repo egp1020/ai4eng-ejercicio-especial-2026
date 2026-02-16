@@ -1,0 +1,54 @@
+Enunciado:
+Una startup de tecnología inmobiliaria quiere comparar dos modelos de regresión para
+predecir el precio de viviendas. Se dispone de una matriz de características numéricas
+X (np.ndarray) y un vector de precios objetivo y (np.ndarray).
+
+Se requiere implementar una función que reciba los datos y un número de folds para
+validación cruzada, y que ejecute el siguiente pipeline:
+
+1. Escalar las características con StandardScaler.
+2. Evaluar un modelo LinearRegression usando cross_val_score con scoring="r2".
+3. Evaluar un modelo Ridge(alpha=1.0) usando cross_val_score con scoring="r2".
+4. Determinar cuál modelo tiene mejor rendimiento promedio (mayor mean R2).
+
+La función debe retornar un diccionario con el resumen de la comparación.
+
+Función a implementar:
+- Nombre: comparar_regresores
+- Argumentos:
+  - X (np.ndarray): Matriz de características de forma (n_samples, n_features).
+  - y (np.ndarray): Vector objetivo de forma (n_samples,).
+  - n_folds (int): Número de folds para la validación cruzada (entre 3 y 10).
+- Retorna: (dict) Diccionario con las claves:
+  - "linear_mean_r2" (float): Media del R2 de LinearRegression en los folds.
+  - "linear_std_r2" (float): Desviación estándar del R2 de LinearRegression.
+  - "ridge_mean_r2" (float): Media del R2 de Ridge en los folds.
+  - "ridge_std_r2" (float): Desviación estándar del R2 de Ridge.
+  - "mejor_modelo" (str): "LinearRegression" o "Ridge", según cuál tenga mayor mean R2.
+
+Ejemplo:
+
+    import numpy as np
+    from sklearn.datasets import make_regression
+
+    X, y = make_regression(n_samples=200, n_features=5, noise=10, random_state=42)
+
+    resultado = comparar_regresores(X, y, n_folds=5)
+    print(resultado)
+    # {
+    #     'linear_mean_r2': 0.9635...,
+    #     'linear_std_r2': 0.0118...,
+    #     'ridge_mean_r2': 0.9632...,
+    #     'ridge_std_r2': 0.0117...,
+    #     'mejor_modelo': 'LinearRegression'
+    # }
+
+Notas/Restricciones:
+- Usar StandardScaler de sklearn.preprocessing.
+- Escalar X antes de pasarlo a cross_val_score (fit_transform sobre todo X,
+  ya que cross_val_score se encarga del split internamente).
+- Usar cross_val_score de sklearn.model_selection con scoring="r2".
+- Usar LinearRegression de sklearn.linear_model.
+- Usar Ridge de sklearn.linear_model con alpha=1.0.
+- Si ambos modelos tienen exactamente el mismo mean R2, retornar "LinearRegression".
+- Librerías permitidas: numpy, sklearn.

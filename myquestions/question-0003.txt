@@ -1,0 +1,54 @@
+Enunciado:
+Una cadena de tiendas de retail desea analizar el rendimiento de sus ventas por región.
+Se dispone de un DataFrame con registros de ventas individuales que incluyen el nombre del
+producto, la región de venta, la cantidad vendida, el precio unitario y el porcentaje de
+descuento aplicado (como valor entre 0 y 1).
+
+Se requiere implementar una función que reciba este DataFrame y genere un resumen por región
+con los siguientes pasos:
+
+1. Calcular el ingreso neto de cada transacción como:
+   ingreso_neto = cantidad * precio_unitario * (1 - descuento)
+2. Agrupar por región y calcular:
+   - total_ingresos: suma del ingreso neto
+   - promedio_descuento: promedio del descuento aplicado
+   - num_transacciones: cantidad de transacciones
+3. Agregar una columna porcentaje_ingresos que represente el porcentaje que cada región
+   aporta al total general de ingresos, redondeado a 2 decimales.
+
+La función debe retornar el DataFrame resumen ordenado por total_ingresos de forma
+descendente, con el índice reiniciado.
+
+Función a implementar:
+- Nombre: resumen_ventas_por_region
+- Argumentos:
+  - df (pd.DataFrame): DataFrame con columnas ["producto", "region", "cantidad",
+    "precio_unitario", "descuento"]. No contiene valores nulos.
+- Retorna: (pd.DataFrame) DataFrame con columnas ["region", "total_ingresos",
+  "promedio_descuento", "num_transacciones", "porcentaje_ingresos"], ordenado por
+  total_ingresos descendente y con índice reiniciado.
+
+Ejemplo:
+
+    import pandas as pd
+
+    df = pd.DataFrame({
+        "producto": ["Laptop", "Mouse", "Teclado", "Monitor", "Laptop", "Mouse"],
+        "region": ["Norte", "Norte", "Sur", "Sur", "Centro", "Centro"],
+        "cantidad": [2, 10, 5, 3, 1, 15],
+        "precio_unitario": [1500.0, 25.0, 80.0, 600.0, 1500.0, 25.0],
+        "descuento": [0.1, 0.0, 0.05, 0.15, 0.2, 0.0]
+    })
+
+    resultado = resumen_ventas_por_region(df)
+    print(resultado)
+    #    region  total_ingresos  promedio_descuento  num_transacciones  porcentaje_ingresos
+    # 0   Norte          2950.0                0.05                  2                43.52
+    # 1     Sur          1910.0                0.10                  2                28.18
+    # 2  Centro          1575.0                0.10                  2                23.23
+
+Notas/Restricciones:
+- Usar groupby y agg de pandas para la agregación.
+- Evitar loops explícitos con for.
+- El porcentaje_ingresos debe sumar aproximadamente 100 entre todas las regiones.
+- Librerías permitidas: pandas, numpy.

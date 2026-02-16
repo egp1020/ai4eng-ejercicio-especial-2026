@@ -1,0 +1,51 @@
+Enunciado:
+Una empresa fintech necesita evaluar qué tan bien funciona un modelo de clasificación
+binaria para detectar transacciones fraudulentas. Se dispone de una matriz de
+características numéricas X (np.ndarray) y un vector de etiquetas binarias y
+(np.ndarray, con valores 0 = legítima, 1 = fraude).
+
+Se requiere implementar una función que reciba los datos, un porcentaje para el
+conjunto de prueba y una semilla de aleatoriedad, y que ejecute el siguiente pipeline:
+
+1. Dividir los datos en entrenamiento y prueba con train_test_split.
+2. Escalar las características con StandardScaler (ajustar solo sobre entrenamiento,
+   transformar tanto entrenamiento como prueba).
+3. Entrenar un DecisionTreeClassifier con max_depth=5 y la semilla recibida.
+4. Evaluar el modelo sobre el conjunto de prueba.
+
+La función debe retornar un diccionario con cuatro métricas calculadas sobre el
+conjunto de prueba: accuracy, precision, recall y f1-score.
+
+Función a implementar:
+- Nombre: evaluar_clasificador_fraude
+- Argumentos:
+  - X (np.ndarray): Matriz de características de forma (n_samples, n_features).
+  - y (np.ndarray): Vector de etiquetas binarias de forma (n_samples,).
+  - test_size (float): Fracción de datos para el conjunto de prueba (entre 0.1 y 0.5).
+  - random_state (int): Semilla para reproducibilidad en train_test_split y el clasificador.
+- Retorna: (dict) Diccionario con las claves:
+  - "accuracy" (float)
+  - "precision" (float)
+  - "recall" (float)
+  - "f1_score" (float)
+
+Ejemplo:
+
+    import numpy as np
+    from sklearn.datasets import make_classification
+
+    X, y = make_classification(
+        n_samples=200, n_features=5, n_informative=3, n_redundant=1,
+        random_state=42
+    )
+
+    resultado = evaluar_clasificador_fraude(X, y, test_size=0.3, random_state=42)
+    print(resultado)
+    # {'accuracy': 0.9, 'precision': 0.8928..., 'recall': 0.8928..., 'f1_score': 0.8928...}
+
+Notas/Restricciones:
+- Usar train_test_split de sklearn.model_selection.
+- Usar StandardScaler de sklearn.preprocessing (fit solo sobre train).
+- Usar DecisionTreeClassifier de sklearn.tree con max_depth=5.
+- Para precision, recall y f1_score, usar zero_division=0.
+- Librerías permitidas: numpy, sklearn.
