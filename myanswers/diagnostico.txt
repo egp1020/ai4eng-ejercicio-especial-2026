@@ -1,0 +1,40 @@
+DIAGNÓSTICO - answer-0513.py
+============================
+
+Tras revisar mi solución con el generador de casos de uso, he visto que hacen exactamente lo mismo.
+
+¿QUÉ PASA?
+==========
+Mi función segmentar_pacientes hace estos pasos:
+
+Línea 21: Elimina duplicados y valores nulos del DataFrame
+Línea 28: Clasifica cada paciente en grupos de riesgo (alto, medio, bajo) según glucosa y presión
+Línea 30: Ordena el resultado por edad
+
+El generador hace exactamente lo mismo en las líneas 78-87:
+Línea 78: También elimina duplicados y nulos
+Línea 86: Clasifica con la misma lógica de riesgo
+Línea 87: Ordena igual por edad
+
+Así que la lógica es idéntica.
+
+¿POR QUÉ NO FUNCIONA ENTONCES?
+==============================
+El problema es que mi compañero incluyó una función extra en el generador que no debería estar allí.
+
+El evaluador busca la primera función del archivo y la ejecuta. Eso está bien. El tema es:
+
+En el generador hay DOS funciones:
+1. "segmentar_pacientes(df)" - ESTO NO DEBERÍA ESTAR en el generador
+2. "generar_caso_de_uso_segmentar_pacientes()" - ESTO es la que sí debería estar
+
+El evaluador ejecuta la primera que encuentra, que es segmentar_pacientes. 
+Pero esa función necesita recibir un DataFrame. Al ejecutarla sin argumentos, 
+da error con "missing 1 required positional argument: 'df'".
+
+CONCLUSIÓN:
+===========
+Mi respuesta está correcta. El error está en el generador del compañero. 
+Él no debería haber puesto la función segmentar_pacientes en su archivo generador. 
+El generador solo debe contener la función generadora (generar_caso_de_uso_segmentar_pacientes), 
+nada más.
